@@ -535,6 +535,12 @@ procdump(void)
 // function for running and runable
 int sys_info_proc(void)
 {
+  struct proc_info
+  {
+    int pid;
+    int memsize;
+  };
+  
     struct proc *p;
     struct proc_info * processes;
     argptr(0,(void*)&processes, sizeof(processes));
@@ -545,19 +551,18 @@ int sys_info_proc(void)
         {
          cprintf("%s \t %d  \t RUNNABLE \n ",
          processes[n].pid=p->pid,
-         processes[n].memsize=p->size );
+         processes[n].memsize=p->sz );
          n++;
         } 
         else if (p->state == RUNNING)
         {
           cprintf("%s \t %d  \t RUNNING \n ",
          processes[n].pid=p->pid,
-         processes[n].memsize=p->size )
+         processes[n].memsize=p->sz );
          n++;
         }
   
     }
-
     // sort processes with size
     struct proc_info max;
     for(int i=0;i<n;i++)

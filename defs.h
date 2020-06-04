@@ -120,7 +120,7 @@ void            userinit(void);
 int             wait(void);
 void            wakeup(void*);
 void            yield(void);
-int             info_proc(void);
+//int             info_proc(void);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
