@@ -533,34 +533,32 @@ procdump(void)
   }
 }
 // function for running and runable
-int sys_info_proc(void)
+int info_proc(void)
 {
-  struct proc_info
-  {
-    int pid;
-    int memsize;
-  };
-  
+
+    // int max;
+    acquire(&ptable.lock);
     struct proc *p;
-    struct proc_info * processes;
+    struct proc_info *processes;
     argptr(0,(void*)&processes, sizeof(processes));
     int n=0;
+    // cprintf("name \t pid \t state \t \n");
+    
+      // Loop over process table looking for process with pid.
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) 
     {
-        if(p->state == RUNNABLE)
-        {
-         cprintf("%s \t %d  \t RUNNABLE \n ",
-         processes[n].pid=p->pid,
-         processes[n].memsize=p->sz );
-         n++;
-        } 
-        else if (p->state == RUNNING)
-        {
-          cprintf("%s \t %d  \t RUNNING \n ",
-         processes[n].pid=p->pid,
-         processes[n].memsize=p->sz );
-         n++;
-        }
+              if(p->state == RUNNABLE){
+                //  cprintf("%s \t %d  \t RUNNABLE \n ",
+                  processes[n].pid=p->pid,
+                  processes[n].memsize=p->sz );
+                  n++;
+              }
+              else if (p->state == RUNNING){
+                // cprintf("%s \t %d  \t RUNNING \n ",
+                processes[n].pid=p->pid,
+                processes[n].memsize=p->sz );
+                n++;
+              }
   
     }
     // sort processes with size
@@ -583,7 +581,7 @@ int sys_info_proc(void)
         processes[tmp]=processes[n-i-1];
         
     }
-
+    release(&ptable.lock);
     return  0;
 }
 
