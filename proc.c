@@ -557,4 +557,28 @@ int sys_info_proc(void)
         }
   
     }
+
+    // sort processes with size
+    struct proc_info max;
+    for(int i=0;i<n;i++)
+	{
+        max.memsize=-1;
+        max.pid=0;
+        int tmp=0;
+        
+        for(int j=0;j<n-i;j++)
+        {
+            if(processes[j].memsize>max.memsize) 
+            {
+              tmp=j;
+              max = processes[j];   
+            }
+        }
+        processes[n-i-1]=max;
+        processes[tmp]=processes[n-i-1];
+        
+    }
+
+    return  0;
 }
+
