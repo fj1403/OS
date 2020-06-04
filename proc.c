@@ -532,3 +532,18 @@ procdump(void)
     cprintf("\n");
   }
 }
+// function for running and runable
+int sys_info_proc(void)
+{
+    struct proc *p;
+    struct proc_info * processes;
+    argptr(0,(void*)&processes, sizeof(processes));
+    int n=0;
+    for(p = ptable.proc; p < &ptable.proc[NPROC]; p++) {
+        if(p->state == RUNNABLE)
+          processes[n].pid=p->pid;
+        else if (p->state == RUNNING)
+          processes[n].memsize=p->size;
+          n++;
+        }
+}
